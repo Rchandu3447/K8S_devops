@@ -1,2 +1,3 @@
-# staging values for app
+appName: myapp
 replicaCount: 2
+image: nginx:1.25
