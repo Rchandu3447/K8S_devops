@@ -1,2 +1,10 @@
-# staging values for db
-storage: 10Gi
+postgresql:
+  auth:
+    username: staging_user
+    password: StagingPass123
+    database: stagingdb
+  primary:
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 250m
