@@ -1,2 +1,10 @@
-# prod values for db
-storage: 20Gi
+postgresql:
+  auth:
+    username: prod_user
+    password: ProdPass123
+    database: proddb
+  primary:
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 500m
