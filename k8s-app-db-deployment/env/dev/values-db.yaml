@@ -1,2 +1,5 @@
-# dev values for db
-storage: 5Gi
+postgresql:
+  auth:
+    username: admin
+    password: YourSecurePass123
+    database: appdb
