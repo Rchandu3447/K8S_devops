@@ -1,2 +1,3 @@
-# prod values for app
+appName: myapp
 replicaCount: 3
+image: nginx:1.25.3
