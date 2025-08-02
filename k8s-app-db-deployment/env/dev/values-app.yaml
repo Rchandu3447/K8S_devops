@@ -1,2 +1,3 @@
-# dev values for app
+appName: myapp
 replicaCount: 1
+image: nginx:latest
