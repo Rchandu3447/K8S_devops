@@ -1,5 +1,0 @@
-postgresql:
-  auth:
-    username: admin
-    password: YourSecurePass123
-    database: appdb

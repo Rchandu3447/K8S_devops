@@ -1,0 +1,101 @@
+stages:
+  - validate
+  - plan
+  - deploy
+
+variables:
+  HELM_RELEASE_NAME: "sample-app"
+
+before_script:
+  - apk add --no-cache curl bash git openssh terraform helm kubectl
+
+.validate_template: &validate_template
+  stage: validate
+  script:
+    - ./scripts/validate.sh
+
+.plan_template: &plan_template
+  stage: plan
+  script:
+    - ./scripts/plan.sh
+  artifacts:
+    paths:
+      - plan.out
+
+.deploy_template: &deploy_template
+  stage: deploy
+  script:
+    - ./scripts/deploy.sh
+
+# DEV ENVIRONMENT
+validate-dev:
+  <<: *validate_template
+  variables:
+    ENV: "dev"
+    TFVARS_FILE: "dev.tfvars"
+    VALUES_FILE: "values-dev.yaml"
+
+plan-dev:
+  <<: *plan_template
+  variables:
+    ENV: "dev"
+    TFVARS_FILE: "dev.tfvars"
+
+deploy-dev:
+  <<: *deploy_template
+  environment:
+    name: dev
+  variables:
+    ENV: "dev"
+    TFVARS_FILE: "dev.tfvars"
+    VALUES_FILE: "values-dev.yaml"
+
+# QA ENVIRONMENT
+validate-qa:
+  <<: *validate_template
+  variables:
+    ENV: "qa"
+    TFVARS_FILE: "qa.tfvars"
+    VALUES_FILE: "values-qa.yaml"
+
+plan-qa:
+  <<: *plan_template
+  variables:
+    ENV: "qa"
+    TFVARS_FILE: "qa.tfvars"
+
+deploy-qa:
+  <<: *deploy_template
+  environment:
+    name: qa
+  variables:
+    ENV: "qa"
+    TFVARS_FILE: "qa.tfvars"
+    VALUES_FILE: "values-qa.yaml"
+
+# PROD ENVIRONMENT
+validate-prod:
+  <<: *validate_template
+  variables:
+    ENV: "prod"
+    TFVARS_FILE: "prod.tfvars"
+    VALUES_FILE: "values-prod.yaml"
+
+plan-prod:
+  <<: *plan_template
+  variables:
+    ENV: "prod"
+    TFVARS_FILE: "prod.tfvars"
+  when: manual
+
+deploy-prod:
+  <<: *deploy_template
+  environment:
+    name: prod
+  variables:
+    ENV: "prod"
+    TFVARS_FILE: "prod.tfvars"
+    VALUES_FILE: "values-prod.yaml"
+  when: manual
+  only:
+    - main
